@@ -12,7 +12,8 @@ Using the strategy pattern we can create routes of different grades so that inst
 each difficulty level becomes it's own strategy class that knows how to generate each route
 
 ### Observer Pattern
-In order to confirm that the user is correct when recollecting the route from the initial screen flash, we will have an observer that looks at the route and is updated each time the climber selects another hold - this will allow the observer to act accordingly when the next step is chosen in the route
+Observer Pattern will be used for a UI element where it will notify the visual display when the game logic updates,
+it will also be used as a guessObserver that will update when a new guess is passed in and confirm against the actual route
 
 ### Factory Pattern
 Factory pattern will be implemented to create boards of different sizes, making creation simple and easy to understand
