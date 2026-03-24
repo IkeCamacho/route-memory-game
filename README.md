@@ -5,13 +5,17 @@ For our project we will create a memory game geared towards rock climbers. The g
 
 ## Design Patterns
 ### Builder Pattern
-We will use builder pattern to enable the creation of a multitude of different routes(RouteBuilder), each landing within preterminded class of difficulty based on conventional climbing grading practices
+Builder pattern will enable the creation of a multitude of different routes(RouteBuilder), each landing within preterminded class of difficulty based on conventional climbing grading practices
 
-### Factory Pattern
-To create multiple routes of differing difficulties to offer our users, we will create factory that utilizes the RouteBuilder in order to mass produce different route puzzles
+### Strategy Pattern
+Using the strategy pattern we can create routes of different grades so that instead of hardcoding factory methods, 
+each difficulty level becomes it's own strategy class that knows how to generate each route
 
 ### Observer Pattern
 In order to confirm that the user is correct when recollecting the route from the initial screen flash, we will have an observer that looks at the route and is updated each time the climber selects another hold - this will allow the observer to act accordingly when the next step is chosen in the route
+
+### Factory Pattern
+Factory pattern will be implemented to create boards of different sizes, making creation simple and easy to understand
 
 
 
