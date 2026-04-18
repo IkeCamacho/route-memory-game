@@ -40,6 +40,6 @@ public class boardBuilder {
     }
 
     public Board build() {
-        return new Board(grid, rows, cols);
+        return new Board(rows, cols);
     }
 }

@@ -10,6 +10,7 @@ public class Hold{
         this.row = row;
         this.col = col;
         this.type = type;
+        this.onRoute = false;
     }
 
     public Hold(int row, int col) {
