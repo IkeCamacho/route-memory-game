@@ -1,4 +1,4 @@
-package src.main.java;
+package MemoryClimbGame;
 
 import java.util.ArrayList;
 import java.util.List;

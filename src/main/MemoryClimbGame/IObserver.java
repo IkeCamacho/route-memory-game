@@ -1,4 +1,4 @@
-import java.util.Observable;
+package MemoryClimbGame;
 
 public interface IObserver {
     public void update();

@@ -1,4 +1,4 @@
-package src.main.java;
+package MemoryClimbGame;
 
 public class Hold{
     private int row;

@@ -1,3 +1,5 @@
+package MemoryClimbGame;
+
 public class GameView implements IObserver {
     private final MemoryClimbGame game;
 
