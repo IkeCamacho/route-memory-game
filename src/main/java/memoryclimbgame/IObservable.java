@@ -1,4 +1,4 @@
-package MemoryClimbGame;
+package memoryclimbgame;
 
 public interface IObservable {
     void addObserver(IObserver o);

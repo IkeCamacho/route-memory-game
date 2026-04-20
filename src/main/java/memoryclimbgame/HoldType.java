@@ -1,4 +1,4 @@
-package MemoryClimbGame;
+package memoryclimbgame;
 
 public enum HoldType {
     JUG,

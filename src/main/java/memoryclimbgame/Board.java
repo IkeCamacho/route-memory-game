@@ -1,4 +1,4 @@
-package MemoryClimbGame;
+package memoryclimbgame;
 
 import java.util.ArrayList;
 import java.util.List;

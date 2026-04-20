@@ -1,5 +1,4 @@
-package MemoryClimbGame;
-
+package memoryclimbgame;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
