@@ -10,6 +10,10 @@ public class Route {
         this.sequence = new ArrayList<>();
     }
 
+    public Route(List<Hold> sequence) {
+        this.sequence = sequence;
+    }
+
     public void addHold(Hold hold) {
         sequence.add(hold);
     }
