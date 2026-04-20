@@ -43,4 +43,16 @@ public class Hold{
     public void setOnRoute(boolean onRoute) {
         this.onRoute = onRoute;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Hold other)) return false;
+        return this.row == other.row && this.col == other.col;
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * row + col;
+    }
 }

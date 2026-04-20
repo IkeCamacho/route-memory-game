@@ -54,4 +54,10 @@ public class Board {
     public Hold getHold(int row, int col) {
         return grid[row][col];
     }
+
+    public void clearRoute() {
+        for (Hold hold : holds) {
+            hold.setOnRoute(false);
+        }
+    }
 }

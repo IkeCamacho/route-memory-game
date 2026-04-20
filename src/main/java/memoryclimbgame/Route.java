@@ -21,4 +21,16 @@ public class Route {
     public Hold getHoldAt(int i) {
         return sequence.get(i);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Route other)) return false;
+        return this.sequence.equals(other.sequence);
+    }
+
+    @Override
+    public int hashCode() {
+        return sequence.hashCode();
+    }
 }
