@@ -1,7 +1,6 @@
-package memoryclimbgame.strategy;
+package memoryclimbgame.route;
 
 import memoryclimbgame.Board;
-import memoryclimbgame.Route;
 
 public interface IRouteStrategy {
     Route generateRoute();

@@ -1,9 +1,9 @@
 package memoryclimbgame;
 
+import memoryclimbgame.route.Route;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Main game window. Contains:

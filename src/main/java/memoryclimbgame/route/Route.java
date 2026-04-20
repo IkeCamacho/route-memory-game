@@ -1,4 +1,6 @@
-package memoryclimbgame;
+package memoryclimbgame.route;
+
+import memoryclimbgame.Hold;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +38,9 @@ public class Route {
     @Override
     public int hashCode() {
         return sequence.hashCode();
+    }
+
+    public List<Hold> getHolds() {
+        return sequence;
     }
 }

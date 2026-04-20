@@ -1,6 +1,7 @@
 package memoryclimbgame;
 
-import memoryclimbgame.strategy.IRouteStrategy;
+import memoryclimbgame.route.IRouteStrategy;
+import memoryclimbgame.route.Route;
 
 import java.util.List;
 
