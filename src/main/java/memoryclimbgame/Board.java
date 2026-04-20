@@ -9,6 +9,7 @@ public class Board {
     private final int row;
     private final int col;
     private List<Hold> holds;
+    private static final Random rand = new Random();
 
     public Board(int row, int col) {
         this.row = row;
@@ -21,7 +22,7 @@ public class Board {
         setupGrid();
     }
 
-    public static Board createPopulated(int rows, int cols, Random rand) {
+    public static Board createPopulated(int rows, int cols) {
         HoldType[] types = HoldType.values();
         List<Hold> holds = new ArrayList<>();
         for (int r = 0; r < rows; r++) {
