@@ -1,6 +1,8 @@
 package memoryclimbgame;
 
+import memoryclimbgame.route.IRouteStrategy;
 import memoryclimbgame.route.Route;
+import memoryclimbgame.route.RouteFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,16 +63,16 @@ public class GameWindow extends JFrame implements IObserver {
         add(topPanel, BorderLayout.NORTH);
 
         // --- Center: Board (empty until game starts) ---
-        boardPanel = null; // created when game starts
+        boardPanel = null;
 
         // --- Bottom: Controls ---
         controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         // Difficulty buttons
         difficultyPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-        JButton easyBtn = createDifficultyButton("Easy", new Color(76, 175, 80));
-        JButton medBtn = createDifficultyButton("Medium", new Color(255, 193, 7));
-        JButton hardBtn = createDifficultyButton("Hard", new Color(244, 67, 54));
+        JButton easyBtn = createDifficultyButton(Difficulty.EASY, new Color(76, 175, 80));
+        JButton medBtn = createDifficultyButton(Difficulty.MEDIUM, new Color(255, 193, 7));
+        JButton hardBtn = createDifficultyButton(Difficulty.HARD, new Color(244, 67, 54));
         difficultyPanel.add(easyBtn);
         difficultyPanel.add(medBtn);
         difficultyPanel.add(hardBtn);
@@ -87,7 +89,9 @@ public class GameWindow extends JFrame implements IObserver {
         add(controlPanel, BorderLayout.SOUTH);
     }
 
-    private JButton createDifficultyButton(String label, Color color) {
+    private JButton createDifficultyButton(Difficulty difficulty, Color color) {
+        String label = difficulty.name().charAt(0) + difficulty.name().substring(1).toLowerCase();
+
         JButton btn = new JButton(label);
         btn.setFont(new Font("SansSerif", Font.BOLD, 14));
         btn.setBackground(color);
@@ -95,43 +99,32 @@ public class GameWindow extends JFrame implements IObserver {
         btn.setOpaque(true);
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);
-        btn.addActionListener(e -> onSelectDifficulty(label.toLowerCase()));
+        btn.addActionListener(e -> onSelectDifficulty(difficulty));
         return btn;
     }
 
     /**
      * Called when the player selects a difficulty.
-     * Creates a temporary mock strategy until partner's code is ready.
      */
-    private void onSelectDifficulty(String difficulty) {
+    private void onSelectDifficulty(Difficulty difficulty) {
+        // Start a fresh game each time a difficulty is selected
+        game = new MemoryClimbGame();
+        game.addObserver(this);
+        scoreObserver = new ScoreObserver(game);
+
         // Hide difficulty buttons during gameplay
         difficultyPanel.setVisible(false);
 
-        // Use partner's strategy when ready, mock for now
-        RouteGenerationStrategy strategy = createStrategy(difficulty);
+        IRouteStrategy strategy = createStrategy(difficulty);
         game.startGame(strategy);
     }
 
     /**
-     * Placeholder: creates a simple strategy for testing the UI.
-     * Replace with RouteFactory.createStrategy() when partner's code is ready.
+     * Creates the route generation strategy for the selected difficulty.
+     * Assumes RouteFactory now supports Difficulty directly.
      */
-    private RouteGenerationStrategy createStrategy(String difficulty) {
-        // TODO: Replace with partner's strategy implementations
-        // return RouteFactory.createStrategy(difficulty);
-        int rows, cols, routeLen;
-        switch (difficulty) {
-            case "medium":
-                rows = 8; cols = 6; routeLen = 5;
-                break;
-            case "hard":
-                rows = 10; cols = 8; routeLen = 7;
-                break;
-            default: // easy
-                rows = 6; cols = 4; routeLen = 3;
-                break;
-        }
-        return new PlaceholderStrategy(rows, cols, routeLen);
+    private IRouteStrategy createStrategy(Difficulty difficulty) {
+        return RouteFactory.createStrategy(difficulty);
     }
 
     /**
@@ -145,6 +138,12 @@ public class GameWindow extends JFrame implements IObserver {
             statusLabel.setText("Select at least one hold!");
             return;
         }
+
+        if (guess.length() != game.getCurrentRoute().length()) {
+            statusLabel.setText("Select exactly " + game.getCurrentRoute().length() + " holds!");
+            return;
+        }
+
         submitButton.setEnabled(false);
         game.submitGuess(guess);
     }
@@ -171,7 +170,9 @@ public class GameWindow extends JFrame implements IObserver {
         // Build/rebuild the board panel
         if (boardPanel != null) {
             remove(boardPanel);
+            boardPanel = null;
         }
+
         Board board = game.getBoard();
         boardPanel = new BoardPanel(board, game.getCurrentRoute());
         add(boardPanel, BorderLayout.CENTER);
@@ -179,6 +180,7 @@ public class GameWindow extends JFrame implements IObserver {
         boardPanel.showRoute(true);
         boardPanel.setClickable(false);
         submitButton.setVisible(false);
+        submitButton.setEnabled(false);
 
         statusLabel.setText("Memorize the route! (" + (SHOW_DURATION_MS / 1000) + "s)");
 
@@ -189,6 +191,7 @@ public class GameWindow extends JFrame implements IObserver {
         if (showTimer != null && showTimer.isRunning()) {
             showTimer.stop();
         }
+
         showTimer = new Timer(SHOW_DURATION_MS, e -> {
             game.hideRoute();
             showTimer.stop();
@@ -198,6 +201,8 @@ public class GameWindow extends JFrame implements IObserver {
     }
 
     private void startGuessing() {
+        if (boardPanel == null) return;
+
         boardPanel.showRoute(false);
         boardPanel.setClickable(true);
         submitButton.setVisible(true);
@@ -212,20 +217,23 @@ public class GameWindow extends JFrame implements IObserver {
     }
 
     private void showGameOver() {
-        boardPanel.showRoute(true);
-        boardPanel.setClickable(false);
+        if (boardPanel != null) {
+            boardPanel.showRoute(true);
+            boardPanel.setClickable(false);
+        }
+
+        if (showTimer != null && showTimer.isRunning()) {
+            showTimer.stop();
+        }
+
         submitButton.setVisible(false);
+        submitButton.setEnabled(false);
 
         String message = scoreObserver.getResultMessage();
         statusLabel.setText(message);
 
         // Show play again buttons
         difficultyPanel.setVisible(true);
-
-        // Reset game for next round
-        game = new MemoryClimbGame();
-        game.addObserver(this);
-        scoreObserver = new ScoreObserver(game);
 
         revalidate();
         repaint();

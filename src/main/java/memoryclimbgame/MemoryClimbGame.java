@@ -10,7 +10,10 @@ public class MemoryClimbGame implements IObservable{
     private Route route;
     private IRouteStrategy strategy;
     private List<IObserver> observers;
-
+    private GameState gameState;
+    private IRouteStrategy routeStrategy;
+    private Route currentRoute;
+    private int score;
 
     @Override
     public void addObserver(IObserver o) {
@@ -26,5 +29,17 @@ public class MemoryClimbGame implements IObservable{
         for (IObserver o : observers){
             o.update();
         }
+    }
+
+    public Route getCurrentRoute() {
+        return currentRoute;
+    }
+
+    public GameState getState() {
+        return gameState;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

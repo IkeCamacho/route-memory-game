@@ -52,4 +52,12 @@ public class RouteFactory {
 
         return new Route(routeHolds);
     }
+
+    public static IRouteStrategy createStrategy(Difficulty difficulty) {
+        return switch (difficulty) {
+            case EASY -> new EasyRoute();
+            case MEDIUM -> new MediumRoute();
+            case HARD -> new HardRoute();
+        };
+    }
 }
