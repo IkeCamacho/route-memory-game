@@ -21,7 +21,7 @@ public class RouteFactory {
         );
     }
 
-    private static Route createRoute(Board board, int routeLength, int maxColShift, int rowSpacing) {
+    private static Route createRoute(Board board, int routeLength, int maxColShift, int maxRowShift) {
         List<Hold> routeHolds = new ArrayList<>();
 
         int rows = board.getRowLength();
@@ -47,7 +47,9 @@ public class RouteFactory {
 
             // update position for next step
             currentCol = nextCol;
-            currentRow -= rowSpacing;
+            int rowSpacing = random.nextInt(maxRowShift) + 1;
+            currentRow = Math.max(currentRow - rowSpacing, 0);
+
         }
 
         return new Route(routeHolds);

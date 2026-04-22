@@ -2,8 +2,8 @@ package memoryclimbgame;
 
 public enum Difficulty {
     EASY(6, 1, 1),
-    MEDIUM(6, 2, 1),
-    HARD(6, 3, 2);
+    MEDIUM(6, 2, 2),
+    HARD(6, 3, 3);
 
     public final int routeLength;
     public final int maxColShift;
