@@ -8,12 +8,6 @@ import java.util.List;
 import memoryclimbgame.route.*;
 
 
-/**
- * Swing panel that renders the climbing wall as a grid of hold buttons.
- * - During SHOWING_ROUTE: route holds are highlighted, clicks disabled
- * - During GUESSING: all holds are neutral, player clicks to build guess
- * - Holds are numbered in the order the player clicks them
- */
 public class BoardPanel extends JPanel {
     private final Board board;
     private final Route actualRoute;
@@ -106,7 +100,6 @@ public class BoardPanel extends JPanel {
         Hold hold = board.getHold(row, col);
 
 
-        // If already selected, allow deselecting the last one
         if (isInGuess(row, col)) {
             if (isLastInGuess(row, col)) {
                 playerGuess.remove(playerGuess.size() - 1);
@@ -118,7 +111,6 @@ public class BoardPanel extends JPanel {
         }
 
 
-        // Add to guess
         playerGuess.add(hold);
         btn.setBackground(HOLD_SELECTED);
         btn.setForeground(Color.WHITE);
@@ -149,6 +141,10 @@ public class BoardPanel extends JPanel {
             Hold h = playerGuess.get(i);
             holdButtons[h.getRow()][h.getCol()].setText(String.valueOf(i + 1));
         }
+    }
+
+    public JButton getHoldButton(int row, int col) {
+        return holdButtons[row][col];
     }
 
 

@@ -10,21 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 
 
-/**
- * Main game window. Contains:
- * - Difficulty selection buttons
- * - The climbing wall grid (BoardPanel)
- * - Score display
- * - Submit guess button
- *
- * Implements IObserver to react to game state changes.
- */
 public class GameWindow extends JFrame implements IObserver {
     private MemoryClimbGame game;
     private ScoreObserver scoreObserver;
+    private ClimberOverlay climberOverlay;
+    private JLayeredPane layeredPane;
 
 
-    // UI components
     private BoardPanel boardPanel;
     private JLabel statusLabel;
     private JLabel scoreLabel;
@@ -34,7 +26,6 @@ public class GameWindow extends JFrame implements IObserver {
     private Timer showTimer;
 
 
-    // How long the route is displayed (milliseconds)
     private static final int SHOW_DURATION_MS = 3000;
 
 
@@ -75,15 +66,12 @@ public class GameWindow extends JFrame implements IObserver {
         add(topPanel, BorderLayout.NORTH);
 
 
-        // --- Center: Board (empty until game starts) ---
         boardPanel = null;
 
 
-        // --- Bottom: Controls ---
         controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
 
-        // Difficulty buttons
         difficultyPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         JButton easyBtn = createDifficultyButton(Difficulty.EASY, new Color(76, 175, 80));
         JButton medBtn = createDifficultyButton(Difficulty.MEDIUM, new Color(255, 193, 7));
@@ -94,7 +82,6 @@ public class GameWindow extends JFrame implements IObserver {
         controlPanel.add(difficultyPanel);
 
 
-        // Submit button (hidden until guessing phase)
         submitButton = new JButton("Submit Guess");
         submitButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         submitButton.setEnabled(false);
@@ -123,17 +110,12 @@ public class GameWindow extends JFrame implements IObserver {
     }
 
 
-    /**
-     * Called when the player selects a difficulty.
-     */
     private void onSelectDifficulty(Difficulty difficulty) {
-        // Start a fresh game each time a difficulty is selected
         game = new MemoryClimbGame();
         game.addObserver(this);
         scoreObserver = new ScoreObserver(game);
 
 
-        // Hide difficulty buttons during gameplay
         difficultyPanel.setVisible(false);
 
 
@@ -142,18 +124,11 @@ public class GameWindow extends JFrame implements IObserver {
     }
 
 
-    /**
-     * Creates the route generation strategy for the selected difficulty.
-     * Assumes RouteFactory now supports Difficulty directly.
-     */
     private IRouteStrategy createStrategy(Difficulty difficulty) {
         return RouteFactory.createStrategy(difficulty);
     }
 
 
-    /**
-     * Called when the player clicks Submit Guess.
-     */
     private void onSubmitGuess() {
         if (boardPanel == null) return;
 
@@ -176,9 +151,6 @@ public class GameWindow extends JFrame implements IObserver {
     }
 
 
-    /**
-     * Observer callback - updates the UI based on game state.
-     */
     @Override
     public void update() {
         SwingUtilities.invokeLater(() -> {
@@ -197,38 +169,40 @@ public class GameWindow extends JFrame implements IObserver {
 
 
     private void showRoute() {
-        // Build/rebuild the board panel
-        if (boardPanel != null) {
-            remove(boardPanel);
-            boardPanel = null;
+        if (layeredPane != null) {
+            remove(layeredPane);
         }
-
 
         Board board = game.getBoard();
         boardPanel = new BoardPanel(board, game.getRoute());
-        add(boardPanel, BorderLayout.CENTER);
+        climberOverlay = new ClimberOverlay(boardPanel, game.getRoute());
 
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(500, 500));
+
+        boardPanel.setBounds(0, 0, 500, 500);
+        climberOverlay.setBounds(0, 0, 500, 500);
+
+        layeredPane.add(boardPanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(climberOverlay, JLayeredPane.PALETTE_LAYER);
+
+        add(layeredPane, BorderLayout.CENTER);
 
         boardPanel.showRoute(true);
         boardPanel.setClickable(false);
         submitButton.setVisible(false);
         submitButton.setEnabled(false);
 
-
         statusLabel.setText("Memorize the route! (" + (SHOW_DURATION_MS / 1000) + "s)");
-
 
         revalidate();
         repaint();
 
+        climberOverlay.animateRoute();
 
-        // Timer to hide the route after the display period
-        if (showTimer != null && showTimer.isRunning()) {
-            showTimer.stop();
-        }
-
-
+        if (showTimer != null && showTimer.isRunning()) showTimer.stop();
         showTimer = new Timer(SHOW_DURATION_MS, e -> {
+            climberOverlay.stopAnimation();
             game.hideRoute();
             showTimer.stop();
         });
@@ -276,7 +250,6 @@ public class GameWindow extends JFrame implements IObserver {
         statusLabel.setText(message);
 
 
-        // Show play again buttons
         difficultyPanel.setVisible(true);
 
 
