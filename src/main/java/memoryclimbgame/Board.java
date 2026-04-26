@@ -34,10 +34,6 @@ public class Board {
         return new Board(rows, cols, holds);
     }
 
-    public boolean inBounds(int r, int c) {
-        return r >= 0 && r < row && c >= 0 && c < col;
-    }
-
     private void setupGrid() {
         grid = new Hold[row][col];
         for(Hold hold : holds) {
@@ -56,9 +52,4 @@ public class Board {
         return grid[row][col];
     }
 
-    public void clearRoute() {
-        for (Hold hold : holds) {
-            hold.setOnRoute(false);
-        }
-    }
 }

@@ -58,8 +58,7 @@ public class MemoryClimbGame implements IObservable{
             notifyObservers();
             generateNextRoute();
         } else {
-            gameState = GameState.GAME_OVER;
-            notifyObservers();
+            endGame();
         }
     }
 
@@ -93,5 +92,10 @@ public class MemoryClimbGame implements IObservable{
 
     public int getScore() {
         return score;
+    }
+
+    public void endGame() {
+        gameState = GameState.GAME_OVER;
+        notifyObservers();
     }
 }

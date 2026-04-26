@@ -24,6 +24,7 @@ public class GameWindow extends JFrame implements IObserver {
     private JPanel difficultyPanel;
     private JPanel controlPanel;
     private Timer showTimer;
+    private JButton endGameButton;
 
 
     private static final int SHOW_DURATION_MS = 3000;
@@ -89,6 +90,12 @@ public class GameWindow extends JFrame implements IObserver {
         submitButton.addActionListener(e -> onSubmitGuess());
         controlPanel.add(submitButton);
 
+        endGameButton = new JButton("End Game");
+        endGameButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        endGameButton.setEnabled(false);
+        endGameButton.setVisible(false);
+        endGameButton.addActionListener(e -> {game.endGame();});
+        controlPanel.add(endGameButton);
 
         add(controlPanel, BorderLayout.SOUTH);
     }
@@ -192,6 +199,9 @@ public class GameWindow extends JFrame implements IObserver {
         boardPanel.setClickable(false);
         submitButton.setVisible(false);
         submitButton.setEnabled(false);
+
+        endGameButton.setVisible(true);
+        endGameButton.setEnabled(true);
 
         statusLabel.setText("Memorize the route! (" + (SHOW_DURATION_MS / 1000) + "s)");
 
