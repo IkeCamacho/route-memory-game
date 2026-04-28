@@ -35,10 +35,6 @@ public class ClimberOverlay extends JPanel {
         setOpaque(false); // transparent so board shows through
     }
 
-    /**
-     * Starts the climber animation along the route.
-     * The climber moves from hold 0 to hold 1, then 1 to 2, etc.
-     */
     public void animateRoute() {
         if (route.length() == 0) return;
 
@@ -59,9 +55,6 @@ public class ClimberOverlay extends JPanel {
         animationTimer.start();
     }
 
-    /**
-     * Stops the animation and hides the climber.
-     */
     public void stopAnimation() {
         if (animationTimer != null && animationTimer.isRunning()) {
             animationTimer.stop();
@@ -72,7 +65,7 @@ public class ClimberOverlay extends JPanel {
 
     private void tick() {
         if (currentHoldIndex >= route.length() - 1) {
-            // Reached the last hold — hold position briefly then stop
+            // Reached the last hold, hold position briefly then stop
             animationTimer.stop();
             repaint();
             return;
@@ -106,18 +99,12 @@ public class ClimberOverlay extends JPanel {
         repaint();
     }
 
-    /**
-     * Smooth easing function for natural movement.
-     */
     private double easeInOut(double t) {
         return t < 0.5
                 ? 2 * t * t
                 : 1 - Math.pow(-2 * t + 2, 2) / 2;
     }
 
-    /**
-     * Gets the center pixel position of a hold button on this overlay.
-     */
     private Point getHoldCenter(int routeIndex) {
         Hold hold = route.getHoldAt(routeIndex);
         JButton btn = boardPanel.getHoldButton(hold.getRow(), hold.getCol());

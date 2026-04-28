@@ -68,10 +68,10 @@ public class BoardPanel extends JPanel {
         btn.setToolTipText("(" + row + ", " + col + ")");
 
 
-        btn.addActionListener(e -> onHoldClicked(row, col, btn));
+        btn.addActionListener(e -> onHoldClicked(row, col, btn)); //register actual click
 
 
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn.addMouseListener(new java.awt.event.MouseAdapter() { //add hover functionality
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 if (clickable && !isInGuess(row, col)) {
@@ -94,14 +94,14 @@ public class BoardPanel extends JPanel {
 
 
     private void onHoldClicked(int row, int col, JButton btn) {
-        if (!clickable) return;
+        if (!clickable) return; //ignore all clicks on board while not in guessing phase
 
 
         Hold hold = board.getHold(row, col);
 
 
-        if (isInGuess(row, col)) {
-            if (isLastInGuess(row, col)) {
+        if (isInGuess(row, col)) { //handles clicking on already selected holds,
+            if (isLastInGuess(row, col)) { // if it's previous number inx route then remove else do nothing
                 playerGuess.remove(playerGuess.size() - 1);
                 btn.setBackground(HOLD_DEFAULT);
                 btn.setText("");
@@ -111,10 +111,10 @@ public class BoardPanel extends JPanel {
         }
 
 
-        playerGuess.add(hold);
+        playerGuess.add(hold); //if hold isn't already selected, add it
         btn.setBackground(HOLD_SELECTED);
         btn.setForeground(Color.WHITE);
-        btn.setText(String.valueOf(playerGuess.size()));
+        btn.setText(String.valueOf(playerGuess.size())); //white text on blue, numbered by order of selection
     }
 
 

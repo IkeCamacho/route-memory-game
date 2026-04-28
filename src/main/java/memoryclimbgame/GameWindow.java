@@ -48,7 +48,6 @@ public class GameWindow extends JFrame implements IObserver {
 
 
     private void buildUI() {
-        // --- Top: Status and Score ---
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
@@ -147,7 +146,7 @@ public class GameWindow extends JFrame implements IObserver {
 
 
         submitButton.setEnabled(false);
-        game.submitGuess(guess);
+        game.submitGuess(guess); //update observers
     }
 
 
