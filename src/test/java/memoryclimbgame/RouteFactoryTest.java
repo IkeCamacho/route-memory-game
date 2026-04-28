@@ -12,14 +12,14 @@ public class RouteFactoryTest {
 
     @Test
     void createEasyRouteReturnsSixHolds() {
-        Board board = new Board(6, 6);
+        Board board = Board.createPopulated(6,6);
         Route route = RouteFactory.createRoute(board, Difficulty.EASY);
         assertEquals(6, route.getHolds().size());
     }
 
     @Test
     void createEasyRouteUsesValidRowsAndColumns() {
-        Board board = new Board(6, 6);
+        Board board = Board.createPopulated(6,6);
         Route route = RouteFactory.createRoute(board, Difficulty.EASY);
         for (Hold hold : route.getHolds()) {
             assertTrue(hold.getRow() >= 0);
@@ -31,7 +31,7 @@ public class RouteFactoryTest {
 
     @Test
     void createEasyRouteMovesUpOneRowAtATime() {
-        Board board = new Board(6, 6);
+        Board board = Board.createPopulated(6,6);
         Route route = RouteFactory.createRoute(board, Difficulty.EASY);
         List<Hold> holds = route.getHolds();
         for (int i = 0; i < holds.size() - 1; i++) {
@@ -44,7 +44,7 @@ public class RouteFactoryTest {
 
     @Test
     void createEasyRouteColumnShiftIsAtMostOne() {
-        Board board = new Board(6, 6);
+        Board board = Board.createPopulated(6,6);
         Route route = RouteFactory.createRoute(board, Difficulty.EASY);
         List<Hold> holds = route.getHolds();
         for (int i = 0; i < holds.size() - 1; i++) {

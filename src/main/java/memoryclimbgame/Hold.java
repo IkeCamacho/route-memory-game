@@ -1,5 +1,7 @@
 package memoryclimbgame;
 
+import java.util.List;
+
 public class Hold{
     private int row;
     private int col;
@@ -28,31 +30,4 @@ public class Hold{
         return col;
     }
 
-    public HoldType getType() {
-        return type;
-    }
-
-    public void setType(HoldType type) {
-        this.type = type;
-    }
-
-    public boolean isOnRoute() {
-        return onRoute;
-    }
-
-    public void setOnRoute(boolean onRoute) {
-        this.onRoute = onRoute;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Hold other)) return false;
-        return this.row == other.row && this.col == other.col;
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * row + col;
-    }
 }
