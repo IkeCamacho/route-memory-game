@@ -1,5 +1,6 @@
-package memoryclimbgame;
+package UI;
 
+import memoryclimbgame.Hold;
 import memoryclimbgame.route.Route;
 
 import javax.swing.*;

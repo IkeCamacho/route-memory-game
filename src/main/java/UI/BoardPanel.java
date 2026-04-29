@@ -1,10 +1,13 @@
-package memoryclimbgame;
+package UI;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import memoryclimbgame.Board;
+import memoryclimbgame.Hold;
 import memoryclimbgame.route.*;
 
 

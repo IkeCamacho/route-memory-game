@@ -1,5 +1,7 @@
 package memoryclimbgame;
 
+import UI.GameWindow;
+
 import javax.swing.*;
 
 public class Main {

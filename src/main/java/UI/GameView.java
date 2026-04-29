@@ -1,4 +1,8 @@
-package memoryclimbgame;
+package UI;
+
+import memoryclimbgame.GameState;
+import memoryclimbgame.IObserver;
+import memoryclimbgame.MemoryClimbGame;
 
 public class GameView implements IObserver {
     private final MemoryClimbGame game;

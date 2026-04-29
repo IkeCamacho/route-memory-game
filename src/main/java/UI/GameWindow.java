@@ -1,6 +1,7 @@
-package memoryclimbgame;
+package UI;
 
 
+import memoryclimbgame.*;
 import memoryclimbgame.route.IRouteStrategy;
 import memoryclimbgame.route.Route;
 import memoryclimbgame.route.RouteFactory;
